@@ -3,7 +3,7 @@ import SideBar from "./SideBar/SideBar"
 
 function DashboardLayout() {
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex' }} className="selection:bg-amber-300/50">
             <SideBar />
             <div style={{ flex: 1 }}>
                 <main>

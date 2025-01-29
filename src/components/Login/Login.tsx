@@ -8,25 +8,24 @@ function Login() {
     const [error, setError] = useState("");
     const [securityQuestions, setSecurityQuestions] = useState<any[]>([]);
     const [answers, setAnswers] = useState<any[]>([]);
-    const [step, setStep] = useState(1); // Paso 1: Validar email y contraseña, Paso 2: Mostrar preguntas
+    const [step, setStep] = useState(1);
+    const [loading, setLoading] = useState(false); // Estado para el spinner
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true); // Activar spinner
 
         try {
             if (step === 1) {
-                // Primer paso: validar email y contraseña
                 const response = await axios.post("http://localhost:3000/auth/login", {
                     email,
                     password,
                 });
 
-                const { securityQuestions } = response.data;
-                setSecurityQuestions(securityQuestions); // Guarda las preguntas
-                setStep(2); // Cambiamos al paso 2 para mostrar preguntas de seguridad
+                setSecurityQuestions(response.data.securityQuestions);
+                setStep(2);
             } else if (step === 2) {
-                // Validar que todas las respuestas estén completas
                 const allAnswersProvided = securityQuestions.every((question) => {
                     const answer = answers.find((a) => a.questionId === question.questionId);
                     return answer && answer.answer.trim() !== "";
@@ -34,23 +33,23 @@ function Login() {
 
                 if (!allAnswersProvided) {
                     setError("Por favor, responde todas las preguntas de seguridad.");
+                    setLoading(false);
                     return;
                 }
 
-                // En el segundo paso, validamos las respuestas de seguridad
                 const response = await axios.post("http://localhost:3000/auth/validate-security", {
                     email,
                     securityAnswers: answers,
                 });
 
-                const { token } = response.data;
-                localStorage.setItem("token", token); // Guarda el token
+                localStorage.setItem("token", response.data.token);
                 alert("Login exitoso!");
-                navigate("/"); // Redirige al dashboard
+                navigate("/");
             }
         } catch (error: any) {
             setError(error.response?.data?.message || "Error al iniciar sesión");
-            console.error(error);
+        } finally {
+            setLoading(false); // Desactivar spinner
         }
     };
 
@@ -68,11 +67,8 @@ function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <form
-                onSubmit={handleSubmit}
-                className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
-            >
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 selection:bg-amber-300/50">
+            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
                 <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
                     Iniciar Sesión
                 </h2>
@@ -81,6 +77,7 @@ function Login() {
                         {error}
                     </div>
                 )}
+
                 {step === 1 && (
                     <>
                         <div className="mb-4">
@@ -115,7 +112,10 @@ function Login() {
                         </div>
 
                         <span className="flex mb-3">
-                            <p className="mr-2">¿No tienes una cuenta?</p> <Link className="font-bold text-blue-600" to={"/register"}>¡Registrate!</Link>
+                            <p className="mr-2">¿No tienes una cuenta?</p>
+                            <Link className="font-bold text-blue-600" to={"/register"}>
+                                ¡Regístrate!
+                            </Link>
                         </span>
                     </>
                 )}
@@ -141,9 +141,29 @@ function Login() {
 
                 <button
                     type="submit"
-                    className="w-full bg-amber-300 text-black font-bold py-2 px-4 rounded-md shadow-lg transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:shadow-amber-300"
+                    className="w-full bg-amber-300 text-black font-bold py-2 px-4 rounded-md shadow-lg transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:shadow-amber-300 disabled:opacity-50 flex justify-center items-center"
+                    disabled={loading} // Deshabilita el botón si está cargando
                 >
-                    {step === 1 ? "Iniciar Sesión" : "Validar Respuestas"}
+                    {loading ? (
+                        <svg className="animate-spin h-5 w-5 mr-3 text-black" viewBox="0 0 24 24">
+                            <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                                fill="none"
+                            ></circle>
+                            <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8H4z"
+                            ></path>
+                        </svg>
+                    ) : (
+                        step === 1 ? "Iniciar Sesión" : "Validar Respuestas"
+                    )}
                 </button>
             </form>
         </div>
