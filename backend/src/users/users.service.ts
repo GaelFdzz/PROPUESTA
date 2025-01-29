@@ -12,7 +12,7 @@ export class UsersService {
 
     async getAllUsers(): Promise<User[]> {
         const usersFound = await this.prisma.user.findMany()
-        if(!usersFound){
+        if (!usersFound) {
             throw new NotFoundException("No users found")
         }
 
@@ -26,7 +26,7 @@ export class UsersService {
             }
         })
 
-        if(!userFound){
+        if (!userFound) {
             throw new NotFoundException("User not found, try another user")
         }
 
@@ -34,32 +34,46 @@ export class UsersService {
     }
 
     async createUser(data: RegisterUserDto) {
+        // Check if the user already exists
         const userExisting = await this.prisma.user.findFirst({
             where: {
-                email: data.email
-            }
-        })
+                email: data.email,
+            },
+        });
 
         if (userExisting) {
-            throw new NotAcceptableException("Email already exists")
+            throw new NotAcceptableException("Email already exists");
         }
 
-        const hashedPassword = await bcrypt.hash(data.password, 10)
-        console.log(hashedPassword)
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(data.password, 10);
 
+        // Log the security answers for debugging
+        console.log("Security Answers Data:", data.securityAnswer);
 
+        // Create the user with security answers
         const userCreated = await this.prisma.user.create({
-            data:{
+            data: {
                 name: data.name,
                 email: data.email,
                 password: hashedPassword,
-                securityAnswers:{
-                    create: data.securityAnswer
-                }
-            }
-        })
+                securityAnswers: {
+                    create: data.securityAnswer.map((answer) => ({
+                        questionId: answer.questionId,
+                        answer: answer.answer,
+                    })),
+                },
+            },
+            include: {
+                securityAnswers: true, // Include the security answers in the response
+            },
+        });
 
-        return userCreated
+        // Log the created user and their security answers
+        console.log("User Created:", userCreated);
+        console.log("Security Answers Created:", userCreated.securityAnswers);
+
+        return userCreated;
     }
 
     async updateUser(id: number, data: UpdateUserDto): Promise<User> {
