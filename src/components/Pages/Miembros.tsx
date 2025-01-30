@@ -2,7 +2,7 @@ function Miembros() {
     return (
         <>
             <div className="flex-1 p-6">
-                <div className="bg-yellow-200 p-6 text-center font-bold rounded-lg mb-6">
+                <div className="bg-yellow-300 p-6 text-center font-bold rounded-lg mb-6">
                     <h1 className="text-3xl">Miembros del equipo</h1>
                     <p className="text-lg">Nombre del equipo</p>
                 </div>

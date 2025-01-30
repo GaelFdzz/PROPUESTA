@@ -1,10 +1,9 @@
 function Equipos() {
     return (
         <>
-
-            <div className="flex-grow p-5 ">
-                <div className="bg-yellow-300 p-5 text-center font-bold rounded-lg text-lg">Equipos activos</div>
-                <div className="flex gap-15 mt-5 justify-center">
+            <div className="flex-1 p-6 ">
+                <div className="bg-yellow-300 p-5 text-center font-bold rounded-lg text-3xl">Equipos activos</div>
+                <div className="flex flex-wrap gap-15 mt-5 justify-center">
                     <div className="bg-gray-200 p-5 rounded-lg text-center w-64">
                         <h3 className="font-bold">Nombre del equipo</h3>
                         <p>Proyecto asignado</p>

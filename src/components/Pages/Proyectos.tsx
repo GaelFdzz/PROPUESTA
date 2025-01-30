@@ -3,7 +3,7 @@ function Proyectos() {
         <>
             <div className="w-4/5 p-8 overflow-y-auto">
                 <div className="mb-8">
-                    <h2 className="text-xl font-bold mb-4">Proyectos activos</h2>
+                    <h2 className="text-3xl font-bold mb-4">Proyectos activos</h2>
                     <div className="bg-yellow-300 p-6 rounded-xl">
                         <table className="w-full border-collapse">
                             <thead>
@@ -36,7 +36,7 @@ function Proyectos() {
                 </div>
 
                 <div className="mb-8">
-                    <h2 className="text-xl font-bold mb-4">Proyectos terminados</h2>
+                    <h2 className="text-3xl font-bold mb-4">Proyectos terminados</h2>
                     <div className="bg-yellow-300 p-6 rounded-xl">
                         <table className="w-full border-collapse">
                             <thead>

@@ -1,8 +1,8 @@
 function Recursos() {
     return (
         <>
-            <div className="w-4/5 p-8 overflow-y-auto">
-                <h2 className="text-xl font-bold text-center bg-yellow-300 p-4 rounded-lg mb-8">Recursos disponibles</h2>
+            <div className=" p-6 overflow-y-auto">
+                <h2 className="text-3xl font-bold text-center bg-yellow-300 p-4 rounded-lg mb-8">Recursos disponibles</h2>
                 <div className="grid grid-cols-3 gap-6">
                     <div className="bg-yellow-100 p-6 rounded-lg shadow-md text-center">
                         <div className="text-4xl mb-4">📄</div>
