@@ -18,7 +18,7 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
       </Route>
 
-      {/* <Route element={<ProtectedRoute/>}> */}
+      <Route element={<ProtectedRoute/>}>
       
         <Route element={<DashboardLayout />}>
           <Route path="/" element={<Home />} />
@@ -28,7 +28,7 @@ function App() {
           <Route path="/proyectos" element={<Proyectos />} />
         </Route>
 
-      {/* </Route> */}
+      </Route>
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
