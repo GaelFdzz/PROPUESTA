@@ -34,7 +34,6 @@ export class UsersService {
     }
 
     async createUser(data: RegisterUserDto) {
-        // Check if the user already exists
         const userExisting = await this.prisma.user.findFirst({
             where: {
                 email: data.email,
@@ -45,13 +44,12 @@ export class UsersService {
             throw new NotAcceptableException("Email already exists");
         }
 
-        // Hash the password
+        // Encriptar contraseña
         const hashedPassword = await bcrypt.hash(data.password, 10);
 
-        // Log the security answers for debugging
         console.log("Security Answers Data:", data.securityAnswer);
 
-        // Create the user with security answers
+        // Crear el usuario con sus preguntas y respuestas
         const userCreated = await this.prisma.user.create({
             data: {
                 name: data.name,
@@ -69,7 +67,6 @@ export class UsersService {
             },
         });
 
-        // Log the created user and their security answers
         console.log("User Created:", userCreated);
         console.log("Security Answers Created:", userCreated.securityAnswers);
 

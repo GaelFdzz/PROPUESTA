@@ -29,11 +29,11 @@ export class AuthService {
             throw new UnauthorizedException('Contraseña incorrecta');
         }
 
-        return user; // Return the full user object
+        return user;
     }
 
     async login(user: any) {
-        // Obtén las preguntas de seguridad
+        // Obtener las preguntas de seguridad
         const securityQuestions = await this.prisma.securityAnswers.findMany({
             where: { userId: user.id },
             include: { predefinedQuestion: true },

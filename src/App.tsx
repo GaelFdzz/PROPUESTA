@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
-import PublicRoute from "./components/PublicRoute"; // Importa el nuevo componente
+import PublicRoute from "./components/PublicRoute";
 import DashboardLayout from "./Layout/DashboardLayout";
 import Login from "./components/Login/Login";
 import Home from "./components/Pages/Home";

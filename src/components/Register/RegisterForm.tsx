@@ -17,7 +17,7 @@ function Register() {
 
   const navigate = useNavigate();
 
-  // Fetch predefined questions on component mount
+  // Traer preguntas de seguridad predefinidas
   useEffect(() => {
     axios.get("http://localhost:3000/auth/predefined-questions")
       .then((response) => {
@@ -42,7 +42,7 @@ function Register() {
 
         setStep(2); // Cambiar al paso 2 para seleccionar preguntas de seguridad
       } else if (step === 2) {
-        // Validar que se hayan seleccionado 3 preguntas y proporcionado respuestas
+        // Validar que se hayan seleccionado 3 preguntas y respuestas
         if (selectedQuestions.length !== 3 || answers.length !== 3) {
           setError("Por favor, selecciona y responde 3 preguntas de seguridad.");
           return;
@@ -53,7 +53,7 @@ function Register() {
           name,
           email,
           password,
-          securityAnswer: answers, // Asegúrate de que este campo coincida con el DTO
+          securityAnswer: answers,
         });
 
         alert("Registro exitoso!");
